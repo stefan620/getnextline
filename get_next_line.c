@@ -15,9 +15,11 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
-#include "ft_getnextline.h"
-#define BUFFER_SIZE 1000000
-
+#include "get_next_line.h"
+#ifndef BUFFER_SIZE
+# define BUFFER_SIZE 3
+#endif
+char *get_next_line(int fd);
 char *joina(char *line, char *rest);
 char *get_buff(int fd)
 {
@@ -88,7 +90,7 @@ char *joina(char *line, char *rest)
 char *get_next_line(int fd)
 {
 	char *line;
-	char *rest;
+	
 	//rest = get_rest(fd);
 	line = get_line(fd);
 	
@@ -96,7 +98,7 @@ char *get_next_line(int fd)
 	
 	
 	return(line);
-}
+}/*
 int	main(void)
 {
 	int fd;
@@ -111,4 +113,4 @@ int	main(void)
 		//printf("%d", BUFFER_SIZE);
 		i++;
 	}
-}
+}*/
