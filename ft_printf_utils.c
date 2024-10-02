@@ -6,7 +6,7 @@
 /*   By: silic <silic@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 13:26:01 by silic             #+#    #+#             */
-/*   Updated: 2024/09/30 14:13:51 by silic            ###   ########.fr       */
+/*   Updated: 2024/10/02 14:04:25 by silic            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,4 +112,28 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 		dst[i] = '\0';
 	}
 	return (j);
+}
+char	*ft_strjoin(char const *s1, char const *s2)
+{
+	int			i;
+	char		*s12;
+	char		*ret;
+	const char	*counter1 = s1;
+	const char	*counter2 = s2;
+
+	i = 0;
+	while (*s1++ != '\0')
+		i++;
+	while (*s2++ != '\0')
+		i++;
+	s12 = (char *)malloc(i * sizeof(char) + 1);
+	if (s12 == NULL)
+		return (NULL);
+	ret = s12;
+	while (*counter1 != '\0')
+		*s12++ = *counter1++;
+	while (*counter2 != '\0')
+		*s12++ = *counter2++;
+	*s12 = '\0';
+	return (ret);
 }
