@@ -6,7 +6,7 @@
 /*   By: silic <silic@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 15:46:11 by silic             #+#    #+#             */
-/*   Updated: 2024/10/02 14:42:38 by silic            ###   ########.fr       */
+/*   Updated: 2024/10/02 16:05:28 by silic            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ft_getnextline.h"
-#define BUFFER_SIZE 10
+#define BUFFER_SIZE 1000000
 
 char *joina(char *line, char *rest);
 char *get_buff(int fd)
@@ -35,11 +35,11 @@ char *get_buff(int fd)
 
 char *get_line(int fd)
 {
-	static char *stuff_read;
+	static char *stuff_read = NULL;
 	int i;
 	i = 1;
 	static char *save;
-	static char *save1;
+	char *save1;
 	static char *rest;
 
 	save = calloc(100, sizeof(char));
@@ -48,7 +48,18 @@ char *get_line(int fd)
 	{
 		stuff_read = get_buff(fd);
 		if (!stuff_read)
-			return(save1);
+		{
+			save1 = save;
+			rest++;
+			while(*rest != '\n')
+			{
+				*save = *rest;
+				save++;
+				rest++;
+			}
+				*save = '\n';
+			return (save1);
+		}
 		while(*stuff_read)
 		{	*save = *stuff_read;
 			if(*stuff_read == '\n' && !rest)
@@ -58,6 +69,7 @@ char *get_line(int fd)
 			}
 			else if (*stuff_read == '\n' && rest)
 				return(joina(save1, rest + 1));
+		
 			stuff_read++;
 			save++;
 		}
@@ -66,7 +78,7 @@ char *get_line(int fd)
 }
 char *joina(char *line, char *rest)
 {
-	char *ret;
+	 char *ret;
 	
 	ret =  ft_strjoin(rest, line);
 
@@ -93,7 +105,7 @@ int	main(void)
 	fd = open("text.txt", O_RDONLY);
 	if (fd < 0)
 		return (1);
-	while(i< 2)
+	while(i< 20)
 	{
 		get_next_line(fd);
 		//printf("%d", BUFFER_SIZE);
