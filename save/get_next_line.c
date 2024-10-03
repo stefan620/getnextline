@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   getnext.c                                          :+:      :+:    :+:   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: silic <silic@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 16:02:23 by silic             #+#    #+#             */
-/*   Updated: 2024/10/03 19:29:26 by silic            ###   ########.fr       */
+/*   Updated: 2024/10/03 19:36:25 by silic            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@
 #endif
 char	*get_rest(char *buff);
 char	*get_line(int fd, char *rest, char *buff);
-char	*get_next_line(fd)
+char	*get_next_line(int fd)
 {
 	char		*buff;
 	char		*line;
 	static char	*rest;
-	int			a;
+
 
 	buff = (char *)malloc(BUFFER_SIZE + 1 * sizeof(char));
 	line = get_line(fd, rest, buff);
@@ -51,16 +51,13 @@ char	*get_rest(char *buff)
 }
 char	*get_line(int fd, char *rest, char *buff)
 {
-	char	*line;
 	int		i;
-	int		j;
 	char *tmp;
 
 	i = 1;
-	j = 0;
 	while(i)
 	{
-		j = read(fd, buff, BUFFER_SIZE);
+		i = read(fd, buff, BUFFER_SIZE);
 		
 		if (!rest)
 		{
