@@ -6,67 +6,14 @@
 /*   By: silic <silic@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 13:26:01 by silic             #+#    #+#             */
-/*   Updated: 2024/10/02 14:04:25 by silic            ###   ########.fr       */
+/*   Updated: 2024/10/03 18:41:33 by silic            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-size_t	ft_strlcpy(char *dst, const char *src, size_t size);
 
-char	*ft_strchr(const char *str, int search_str)
-{
-	unsigned char	*ptr;
-	unsigned char	*ptr1;
-
-	ptr1 = (unsigned char *)&search_str;
-	ptr = (unsigned char *)str;
-	while (*ptr != '\0')
-	{
-		if (*ptr == *ptr1)
-		{
-			return ((char *)ptr);
-		}
-		ptr++;
-	}
-	if (*ptr1 == 0)
-		return ((char *)ptr);
-	return (0);
-}
-#include <stdlib.h>
-
-char	*ft_strdup(const char *s)
-{
-	int		i;
-	char	*dup;
-	char	*dup1;
-
-	i = 0;
-	while (s[i] != '\0')
-	{
-		i++;
-	}
-	dup = (char *) malloc(i * sizeof(char) + 1);
-	if (dup == NULL)
-		return (NULL);
-	dup1 = dup;
-	while (i-- > 0)
-	{
-		*dup++ = *s++;
-	}
-	*dup = '\0';
-	return (dup1);
-}
-size_t	ft_strlen(const char *str)
-{
-	size_t	n;
-
-	n = 0;
-	while (str[n])
-	{
-		n++;
-	}
-	return (n);
-}
+static size_t	ft_strlcpy(char *dst, const char *src, size_t size);
+size_t	ft_strlen(const char *str);
 char	*ft_substr(const char *s, unsigned int start, size_t len)
 {
 	char		*sub;
@@ -93,7 +40,20 @@ char	*ft_substr(const char *s, unsigned int start, size_t len)
 		ft_strlcpy(sub, s + start, len + 1);
 	return (sub);
 }
-size_t	ft_strlcpy(char *dst, const char *src, size_t size)
+#include <stdlib.h>
+
+size_t	ft_strlen(const char *str)
+{
+	size_t	n;
+
+	n = 0;
+	while (str[n])
+	{
+		n++;
+	}
+	return (n);
+}
+static size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 {
 	size_t	i;
 	size_t	j;
@@ -113,6 +73,31 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 	}
 	return (j);
 }
+#include <stdlib.h>
+
+char	*ft_strdup(const char *s)
+{
+	int		i;
+	char	*dup;
+	char	*dup1;
+
+	i = 0;
+	while (s[i] != '\0')
+	{
+		i++;
+	}
+	dup = (char *) malloc(i * sizeof(char) + 1);
+	if (dup == NULL)
+		return (NULL);
+	dup1 = dup;
+	while (i-- > 0)
+	{
+		*dup++ = *s++;
+	}
+	*dup = '\0';
+	return (dup1);
+}
+
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	int			i;

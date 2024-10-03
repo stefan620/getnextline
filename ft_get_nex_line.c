@@ -6,7 +6,7 @@
 /*   By: silic <silic@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 15:46:11 by silic             #+#    #+#             */
-/*   Updated: 2024/10/02 16:05:28 by silic            ###   ########.fr       */
+/*   Updated: 2024/10/03 16:01:35 by silic            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ft_getnextline.h"
-#define BUFFER_SIZE 1000000
+#define BUFFER_SIZE 100
 
 char *joina(char *line, char *rest);
 char *get_buff(int fd)
@@ -47,9 +47,10 @@ char *get_line(int fd)
 	while(i)
 	{
 		stuff_read = get_buff(fd);
+		
 		if (!stuff_read)
 		{
-			save1 = save;
+			save1  = save;
 			rest++;
 			while(*rest != '\n')
 			{
@@ -58,7 +59,10 @@ char *get_line(int fd)
 				rest++;
 			}
 				*save = '\n';
-			return (save1);
+			if(*rest == '\n')
+				return (save1);
+			else
+				return(NULL);
 		}
 		while(*stuff_read)
 		{	*save = *stuff_read;
