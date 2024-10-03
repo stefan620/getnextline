@@ -96,14 +96,18 @@ int	main(void)
 {
 	int fd;
 	int i = 0;
+	char *s;
 
 	fd = open("text.txt", O_RDONLY);
 	if (fd < 0)
 		return (1);
 	while (i < 5)
 	{
-		printf("%s", get_next_line(fd));
+		s = get_next_line(fd);
+		printf("%s", s);
 		// printf("%d", BUFFER_SIZE);
+		free(s);
 		i++;
 	}
+	
 }
