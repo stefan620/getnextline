@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_get_next_line.h"
+#include "get_next_line.h"
 #include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -19,34 +19,46 @@
 #ifndef BUFFER_SIZE
 # define BUFFER_SIZE 1
 #endif
-char	*get_rest(char *buff);
+char	*get_rest(char *buff, size_t len);
 char	*get_line(int fd, char *rest, char *buff);
 char	*get_next_line(int fd)
 {
 	char		*buff;
 	char		*line;
-	static char	*rest;
+	static char	*rest = NULL;
 
-
+	
 	buff = (char *)malloc(BUFFER_SIZE + 1 * sizeof(char));
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
+	{
+		free(rest);
+		free(buff);
+		rest = NULL;
+		return(NULL);
+	}
 	line = get_line(fd, rest, buff);
 	free(buff);
-	rest = get_rest(line);
+	if (!line)
+		return(NULL);
+	rest = get_rest(line, ft_strlen(line));
 	return (line);
 }
-char	*get_rest(char *buff)
+char	*get_rest(char *buff , size_t len)
 {
 	char	*rest;
 	int		i;
-
+	
+	rest = NULL;
 	i = 0;
 	while (buff[i] != '\n' && buff[i] != '\0')
 		i++;
 	if (buff[i] == '\0')
 		rest = ft_strdup("");
-	else if (buff[i] == '\n')
+	if (buff[i] == '\n')
+	{
 		rest = ft_substr(buff, i + 1, ft_strlen(buff) - i);
-	buff[i + 1] = '\0';
+	    buff[i + 1] = '\0';
+	}
 	return (rest);
 }
 char	*get_line(int fd, char *rest, char *buff)
@@ -58,7 +70,9 @@ char	*get_line(int fd, char *rest, char *buff)
 	while(i)
 	{
 		i = read(fd, buff, BUFFER_SIZE);
-		
+		if(*buff == 0)
+			return(NULL);
+		//buff[BUFFER_SIZE -1] = '\0';
 		if (!rest)
 		{
 			free(rest);
@@ -67,10 +81,14 @@ char	*get_line(int fd, char *rest, char *buff)
 		tmp = rest;
 		//free(rest);
 		rest = ft_strjoin(tmp, buff);
+		free(tmp);
 		
 		if (strchr(rest ,'\n'))
+		{
 			break;
-			
+			//return(rest);
+		}	
+		
 	}
 	return(rest);
 }
@@ -82,7 +100,7 @@ int	main(void)
 	fd = open("text.txt", O_RDONLY);
 	if (fd < 0)
 		return (1);
-	while (i < 1)
+	while (i < 5)
 	{
 		printf("%s", get_next_line(fd));
 		// printf("%d", BUFFER_SIZE);
