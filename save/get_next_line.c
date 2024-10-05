@@ -6,7 +6,7 @@
 /*   By: silic <silic@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 16:02:23 by silic             #+#    #+#             */
-/*   Updated: 2024/10/05 16:00:00 by silic            ###   ########.fr       */
+/*   Updated: 2024/10/05 16:32:49 by silic            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,9 @@ char	*get_line(int fd, char *rest, char *buff)
 		i = read(fd, buff, BUFFER_SIZE);
 		//printf("%i", i);
 		if (i == 0)
-			return(NULL);
+			break;
+		if (*buff ==  0)
+			break;
 		if (!rest)
 		{
 			free(rest);
@@ -86,7 +88,7 @@ char	*get_line(int fd, char *rest, char *buff)
 		free(tmp);
 		tmp = NULL;
 		
-		if (strchr(rest ,'\0'))
+		if (strchr(rest ,'\n'))
 			break;
 	}
 	return(rest);
@@ -100,7 +102,7 @@ int	main(void)
 	fd = open("text.txt", O_RDONLY);
 	if (fd < 0)
 		return (1);
-	while (i < 20)
+	while (i < 1)
 	{
 		s = get_next_line(fd);
 		printf("%s", s);
