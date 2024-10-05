@@ -89,7 +89,7 @@ char	*get_line(int fd, char *rest, char *buff)
 		rest = ft_strjoin(tmp, buff);
 		free(tmp);
 		tmp = NULL;
-		
+		memset(buff, '\0', BUFFER_SIZE);
 		if (strchr(rest ,'\n'))
 			break;
 	}
