@@ -29,6 +29,8 @@ char	*get_next_line(int fd)
 
 	
 	buff = (char *)calloc(BUFFER_SIZE + 1 , sizeof(char));
+	if (!buff)
+		return(NULL);
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
 	{
 		free(rest);
@@ -38,7 +40,7 @@ char	*get_next_line(int fd)
 	}
 	line = get_line(fd, rest, buff);
 	free(buff);
-	if (!line)
+	if (*line == 0)
 		return(NULL);
 	rest = get_rest(line);
 	return (line);
@@ -57,15 +59,15 @@ char	*get_rest(char *buff)
 	if (buff[i] == '\n')
 	{
 		rest = ft_substr(buff, i + 1, ft_strlen(buff) - i);
-	    //buff[i + 1] = '\0';
+		buff[i + 1] = '\0';
 	}
+	
 	
 	return (rest);
 }
 char	*get_line(int fd, char *rest, char *buff)
 {
 	int		i;
-	int		j = 0;
 	char *tmp;
 
 	i = 1;
@@ -75,13 +77,13 @@ char	*get_line(int fd, char *rest, char *buff)
 		//printf("%i", i);
 		if (i == 0)
 			break;
-		if (*buff ==  0)
-			break;
 		if (!rest)
 		{
 			free(rest);
 			rest = ft_strdup("");
 		}
+		if (i == 0)
+			break;
 		tmp = rest;
 		//free(rest);
 		rest = ft_strjoin(tmp, buff);
@@ -92,7 +94,7 @@ char	*get_line(int fd, char *rest, char *buff)
 			break;
 	}
 	return(rest);
-}
+}/*
 int	main(void)
 {
 	int fd;
@@ -111,4 +113,4 @@ int	main(void)
 		i++;
 	}
 	
-}
+}*/
