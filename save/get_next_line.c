@@ -6,7 +6,7 @@
 /*   By: silic <silic@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 16:02:23 by silic             #+#    #+#             */
-/*   Updated: 2024/10/05 15:01:47 by silic            ###   ########.fr       */
+/*   Updated: 2024/10/05 16:00:00 by silic            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <string.h>
 #include <unistd.h>
 #ifndef BUFFER_SIZE
-# define BUFFER_SIZE 600
+# define BUFFER_SIZE 1
 #endif
 char	*get_rest(char *buff);
 char	*get_line(int fd, char *rest, char *buff);
@@ -72,7 +72,8 @@ char	*get_line(int fd, char *rest, char *buff)
 	while(i)
 	{
 		i = read(fd, buff, BUFFER_SIZE);
-		if(*buff == 0)
+		//printf("%i", i);
+		if (i == 0)
 			return(NULL);
 		if (!rest)
 		{
@@ -83,6 +84,7 @@ char	*get_line(int fd, char *rest, char *buff)
 		//free(rest);
 		rest = ft_strjoin(tmp, buff);
 		free(tmp);
+		tmp = NULL;
 		
 		if (strchr(rest ,'\0'))
 			break;
