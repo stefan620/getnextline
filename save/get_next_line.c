@@ -19,15 +19,14 @@
 #ifndef BUFFER_SIZE
 # define BUFFER_SIZE 1
 #endif
-char	*get_rest(char *buff);
-char	*get_line(int fd, char *rest, char *buff);
+static char	*get_rest(char *buff);
+static char	*get_line(int fd, char *rest, char *buff);
 char	*get_next_line(int fd)
 {
 	char		*buff;
 	char		*line;
 	static char	*rest = NULL;
 
-	
 	buff = (char *)calloc(BUFFER_SIZE + 1 , sizeof(char));
 	if (!buff)
 		return(NULL);
@@ -40,12 +39,20 @@ char	*get_next_line(int fd)
 	}
 	line = get_line(fd, rest, buff);
 	free(buff);
-	if (*line == 0)
+	if (!line)
+	{
+		free(line);
 		return(NULL);
+	}
+	if (*line == 0)
+    {
+		free(line);
+		return(NULL);
+	}
 	rest = get_rest(line);
 	return (line);
 }
-char	*get_rest(char *buff)
+static char	*get_rest(char *buff)
 {
 	char	*rest;
 	int		i;
@@ -61,11 +68,9 @@ char	*get_rest(char *buff)
 		rest = ft_substr(buff, i + 1, ft_strlen(buff) - i);
 		buff[i + 1] = '\0';
 	}
-	
-	
 	return (rest);
 }
-char	*get_line(int fd, char *rest, char *buff)
+static char	*get_line(int fd, char *rest, char *buff)
 {
 	int		i;
 	char *tmp;
@@ -112,5 +117,5 @@ int	main(void)
 		//free(s);
 		i++;
 	}
-	
+	free(s);
 }*/
