@@ -17,7 +17,7 @@
 #include <string.h>
 #include <unistd.h>
 #ifndef BUFFER_SIZE
-# define BUFFER_SIZE 1
+# define BUFFER_SIZE 10000000
 #endif
 static char	*get_rest(char *buff);
 static char	*get_line(int fd, char *rest, char *buff);
@@ -28,28 +28,31 @@ char	*get_next_line(int fd)
 	static char	*rest = NULL;
 
 	buff = (char *)calloc(BUFFER_SIZE + 1 , sizeof(char));
-	if (!buff)
-		return(NULL);
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 	{
 		free(rest);
 		free(buff);
 		rest = NULL;
+		buff = NULL;
 		return(NULL);
 	}
+	if (!buff)
+		return(NULL);
 	line = get_line(fd, rest, buff);
 	free(buff);
+	buff = NULL;
 	if (!line)
-	{
-		free(line);
+	{	
 		return(NULL);
 	}
 	if (*line == 0)
     {
+
 		free(line);
 		return(NULL);
 	}
 	rest = get_rest(line);
+
 	return (line);
 }
 static char	*get_rest(char *buff)
@@ -57,16 +60,18 @@ static char	*get_rest(char *buff)
 	char	*rest;
 	int		i;
 	
-	rest = NULL;
 	i = 0;
 	while (buff[i] != '\n' && buff[i] != '\0')
 		i++;
-	if (buff[i] == '\0')
-		rest = ft_strdup("");
-	if (buff[i] == '\n')
+	if (buff[0] == 0 || buff[i] == 0)
+		return(NULL);
+	rest = ft_substr(buff, i + 1, ft_strlen(buff) - i);
+	buff[i + 1] = '\0';
+	
+	if (*rest == 0)
 	{
-		rest = ft_substr(buff, i + 1, ft_strlen(buff) - i);
-		buff[i + 1] = '\0';
+		free(rest);
+		rest = NULL;
 	}
 	return (rest);
 }
@@ -80,17 +85,21 @@ static char	*get_line(int fd, char *rest, char *buff)
 	{
 		i = read(fd, buff, BUFFER_SIZE);
 		//printf("%i", i);
-		if (i == 0)
-			break;
-		if (!rest)
+		if (i == -1)
 		{
 			free(rest);
-			rest = ft_strdup("");
+			return(NULL);
 		}
 		if (i == 0)
+		{
+			free(rest);
 			break;
+		}
+		if (!rest)
+		{
+			rest = ft_strdup("");
+		}
 		tmp = rest;
-		//free(rest);
 		rest = ft_strjoin(tmp, buff);
 		free(tmp);
 		tmp = NULL;
@@ -99,23 +108,23 @@ static char	*get_line(int fd, char *rest, char *buff)
 			break;
 	}
 	return(rest);
-}/*
+}
 int	main(void)
 {
 	int fd;
 	int i = 0;
 	char *s;
 
-	fd = open("text.txt", O_RDONLY);
+	fd = open("giant_line.txt", O_RDONLY);
 	if (fd < 0)
-		return (1);
-	while (i < 1)
+		return (0);
+	while (i < 2)
 	{
 		s = get_next_line(fd);
 		printf("%s", s);
-		// printf("%d", BUFFER_SIZE);
+		printf("%d", i);
 		//free(s);
 		i++;
 	}
 	free(s);
-}*/
+}
