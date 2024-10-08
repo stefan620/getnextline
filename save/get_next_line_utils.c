@@ -18,7 +18,6 @@ char	*ft_substr(const char *s, unsigned int start, size_t len)
 {
 	char		*sub;
 	size_t		i;
-
 	i = ft_strlen(s);
 	if (!s)
 		return (NULL);
@@ -105,6 +104,8 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	char		*ret;
 	const char	*counter1 = s1;
 	const char	*counter2 = s2;
+	const char	*free1 = s1;
+	const char	*free2 = s2;
 
 	i = 0;
 	while (*s1++ != '\0')
@@ -120,5 +121,5 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	while (*counter2 != '\0')
 		*s12++ = *counter2++;
 	*s12 = '\0';
-	return (ret);
+	return (free((void *)free1), free((void *)free2), ret);
 }

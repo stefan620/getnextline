@@ -17,42 +17,38 @@
 #include <string.h>
 #include <unistd.h>
 #ifndef BUFFER_SIZE
-# define BUFFER_SIZE 10000000
+# define BUFFER_SIZE 10
 #endif
 static char	*get_rest(char *buff);
-static char	*get_line(int fd, char *rest, char *buff);
+static char	*get_line(int fd, char *rest);
 char	*get_next_line(int fd)
 {
-	char		*buff;
-	char		*line;
+	char		*line = NULL;
 	static char	*rest = NULL;
 
-	buff = (char *)calloc(BUFFER_SIZE + 1 , sizeof(char));
+	
 	if (fd < 0 || BUFFER_SIZE <= 0)
 	{
 		free(rest);
-		free(buff);
+		free(line);
 		rest = NULL;
-		buff = NULL;
 		return(NULL);
 	}
-	if (!buff)
-		return(NULL);
-	line = get_line(fd, rest, buff);
-	free(buff);
-	buff = NULL;
+	line = get_line(fd, rest);
 	if (!line)
 	{	
+		free(rest);
+		free(line);
+		rest = NULL;
 		return(NULL);
 	}
-	if (*line == 0)
-    {
-
+	if(*line == 0)
+	{
+		free(rest);
 		free(line);
 		return(NULL);
 	}
 	rest = get_rest(line);
-
 	return (line);
 }
 static char	*get_rest(char *buff)
@@ -67,7 +63,6 @@ static char	*get_rest(char *buff)
 		return(NULL);
 	rest = ft_substr(buff, i + 1, ft_strlen(buff) - i);
 	buff[i + 1] = '\0';
-	
 	if (*rest == 0)
 	{
 		free(rest);
@@ -75,41 +70,40 @@ static char	*get_rest(char *buff)
 	}
 	return (rest);
 }
-static char	*get_line(int fd, char *rest, char *buff)
+static char	*get_line(int fd, char *rest)
 {
 	int		i;
 	char *tmp;
+	char *buff;
 
 	i = 1;
 	while(i)
 	{
+		buff = (char *)malloc(BUFFER_SIZE + 1 * sizeof(char));
+		if (!buff)
+		return(NULL);
 		i = read(fd, buff, BUFFER_SIZE);
-		//printf("%i", i);
 		if (i == -1)
-		{
-			free(rest);
-			return(NULL);
-		}
+			return(free(buff), NULL);
+		buff[i] = 0;
 		if (i == 0)
-		{
-			free(rest);
+		{	
+			free(buff);
 			break;
 		}
 		if (!rest)
 		{
+			free(rest);
 			rest = ft_strdup("");
 		}
 		tmp = rest;
 		rest = ft_strjoin(tmp, buff);
-		free(tmp);
-		tmp = NULL;
-		memset(buff, '\0', BUFFER_SIZE);
 		if (strchr(rest ,'\n'))
 			break;
 	}
 	return(rest);
 }
-int	main(void)
+/*int	main(void)
 {
 	int fd;
 	int i = 0;
@@ -118,13 +112,13 @@ int	main(void)
 	fd = open("giant_line.txt", O_RDONLY);
 	if (fd < 0)
 		return (0);
-	while (i < 2)
+	while (i < 3)
 	{
 		s = get_next_line(fd);
 		printf("%s", s);
-		printf("%d", i);
-		//free(s);
+		//printf("%d", i);
+		free(s);
 		i++;
 	}
-	free(s);
-}
+	//free(s);
+}*/
