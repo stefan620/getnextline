@@ -13,11 +13,13 @@
 #include <stdlib.h>
 
 static size_t	ft_strlcpy(char *dst, const char *src, size_t size);
-size_t	ft_strlen(const char *str);
+size_t			ft_strlen(const char *str);
+
 char	*ft_substr(const char *s, unsigned int start, size_t len)
 {
-	char		*sub;
-	size_t		i;
+	char	*sub;
+	size_t	i;
+
 	i = ft_strlen(s);
 	if (!s)
 		return (NULL);
@@ -39,7 +41,6 @@ char	*ft_substr(const char *s, unsigned int start, size_t len)
 		ft_strlcpy(sub, s + start, len + 1);
 	return (sub);
 }
-#include <stdlib.h>
 
 size_t	ft_strlen(const char *str)
 {
@@ -52,6 +53,7 @@ size_t	ft_strlen(const char *str)
 	}
 	return (n);
 }
+
 static size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 {
 	size_t	i;
@@ -72,7 +74,6 @@ static size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 	}
 	return (j);
 }
-#include <stdlib.h>
 
 char	*ft_strdup(const char *s)
 {
@@ -85,7 +86,7 @@ char	*ft_strdup(const char *s)
 	{
 		i++;
 	}
-	dup = (char *) malloc(i * sizeof(char) + 1);
+	dup = (char *)malloc(i * sizeof(char) + 1);
 	if (dup == NULL)
 		return (NULL);
 	dup1 = dup;
@@ -105,7 +106,6 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	const char	*counter1 = s1;
 	const char	*counter2 = s2;
 	const char	*free1 = s1;
-	const char	*free2 = s2;
 
 	i = 0;
 	while (*s1++ != '\0')
@@ -121,5 +121,5 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	while (*counter2 != '\0')
 		*s12++ = *counter2++;
 	*s12 = '\0';
-	return (free((void *)free1), free((void *)free2), ret);
+	return (free((void *)free1), ret);
 }

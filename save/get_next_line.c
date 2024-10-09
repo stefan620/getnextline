@@ -17,50 +17,46 @@
 #include <string.h>
 #include <unistd.h>
 #ifndef BUFFER_SIZE
-# define BUFFER_SIZE 10
+# define BUFFER_SIZE 1
 #endif
+
 static char	*get_rest(char *buff);
-static char	*get_line(int fd, char *rest);
+static char	*get_line(int fd, char *rest, char *buff);
+
 char	*get_next_line(int fd)
 {
-	char		*line = NULL;
+	char		*line;
 	static char	*rest = NULL;
+	char		*buff;
 
-	
+	line = NULL;
+	buff = (char *)malloc(BUFFER_SIZE + 1 * sizeof(char));
 	if (fd < 0 || BUFFER_SIZE <= 0)
-	{
-		free(rest);
-		free(line);
-		rest = NULL;
-		return(NULL);
-	}
-	line = get_line(fd, rest);
+		return (free(rest), free(line), free(buff), buff = NULL, rest = NULL,
+			NULL);
+	if (!buff)
+		return (NULL);
+	line = get_line(fd, rest, buff);
+	free(buff);
+	buff = NULL;
 	if (!line)
-	{	
-		free(rest);
-		free(line);
-		rest = NULL;
-		return(NULL);
-	}
-	if(*line == 0)
-	{
-		free(rest);
-		free(line);
-		return(NULL);
-	}
+		return (free(rest), free(line), free(buff), rest = NULL, NULL);
+	if (*line == 0)
+		return (free(rest), free(line), NULL);
 	rest = get_rest(line);
 	return (line);
 }
+
 static char	*get_rest(char *buff)
 {
 	char	*rest;
 	int		i;
-	
+
 	i = 0;
 	while (buff[i] != '\n' && buff[i] != '\0')
 		i++;
 	if (buff[0] == 0 || buff[i] == 0)
-		return(NULL);
+		return (NULL);
 	rest = ft_substr(buff, i + 1, ft_strlen(buff) - i);
 	buff[i + 1] = '\0';
 	if (*rest == 0)
@@ -70,40 +66,32 @@ static char	*get_rest(char *buff)
 	}
 	return (rest);
 }
-static char	*get_line(int fd, char *rest)
+
+static char	*get_line(int fd, char *rest, char *buff)
 {
 	int		i;
-	char *tmp;
-	char *buff;
+	char	*tmp;
 
 	i = 1;
-	while(i)
+	while (i)
 	{
-		buff = (char *)malloc(BUFFER_SIZE + 1 * sizeof(char));
-		if (!buff)
-			return(NULL);
 		i = read(fd, buff, BUFFER_SIZE);
 		if (i == -1)
-			return(free(buff), NULL);
+			return (NULL);
 		buff[i] = 0;
 		if (i == 0)
-		{	
-			free(buff);
-			break;
-		}
+			break ;
 		if (!rest)
-		{
-			free(rest);
 			rest = ft_strdup("");
-		}
 		tmp = rest;
 		if (rest)
 			rest = ft_strjoin(tmp, buff);
-		if (rest && strchr(rest ,'\n'))
-			break;
+		if (rest && strchr(rest, '\n'))
+			break ;
 	}
-	return(rest);
+	return (rest);
 }
+
 /*int	main(void)
 {
 	int fd;
