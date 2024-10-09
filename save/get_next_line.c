@@ -6,7 +6,7 @@
 /*   By: silic <silic@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 16:02:23 by silic             #+#    #+#             */
-/*   Updated: 2024/10/09 14:53:12 by silic            ###   ########.fr       */
+/*   Updated: 2024/10/09 15:07:51 by silic            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ static char	*get_line(int fd, char *rest)
 		if (i == 0)
 		{	
 			free(buff);
-			free(tmp);
 			break;
 		}
 		if (!rest)
@@ -97,9 +96,9 @@ static char	*get_line(int fd, char *rest)
 			free(rest);
 			rest = ft_strdup("");
 		}
-		
 		tmp = rest;
-		rest = ft_strjoin(tmp, buff);
+		if (rest)
+			rest = ft_strjoin(tmp, buff);
 		if (rest && strchr(rest ,'\n'))
 			break;
 	}
@@ -114,7 +113,7 @@ int	main(void)
 	fd = open("giant_line.txt", O_RDONLY);
 	if (fd < 0)
 		return (0);
-	while (i < 1)
+	while (i < 2)
 	{
 		s = get_next_line(fd);
 		printf("%s", s);
