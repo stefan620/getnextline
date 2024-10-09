@@ -6,7 +6,7 @@
 /*   By: silic <silic@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:08:26 by silic             #+#    #+#             */
-/*   Updated: 2024/10/09 14:29:56 by silic            ###   ########.fr       */
+/*   Updated: 2024/10/09 15:22:18 by silic            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 #include <stdlib.h>
 
 char *get_next_line(int fd);
-char	*ft_strchr(const char *str, int search_str);
 char	*ft_strdup(const char *s);
 size_t	ft_strlen(const char *str);
 char	*ft_substr(const char *s, unsigned int start, size_t len);
