@@ -104,7 +104,7 @@ static char	*get_line(int fd, char *rest)
 	}
 	return(rest);
 }
-int	main(void)
+/*int	main(void)
 {
 	int fd;
 	int i = 0;
@@ -122,4 +122,4 @@ int	main(void)
 		i++;
 	}
 	//free(s);
-}
+}*/
