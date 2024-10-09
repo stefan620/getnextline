@@ -58,6 +58,8 @@ static char	*get_rest(char *buff)
 	if (buff[0] == 0 || buff[i] == 0)
 		return (NULL);
 	rest = ft_substr(buff, i + 1, ft_strlen(buff) - i);
+	if (!rest)
+		return(NULL);
 	buff[i + 1] = '\0';
 	if (*rest == 0)
 	{

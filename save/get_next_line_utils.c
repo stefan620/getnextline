@@ -53,7 +53,6 @@ size_t	ft_strlen(const char *str)
 	}
 	return (n);
 }
-
 static size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 {
 	size_t	i;
@@ -114,7 +113,11 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		i++;
 	s12 = (char *)malloc(i * sizeof(char) + 1);
 	if (s12 == NULL)
+	{
+		
+		free((void *)free1);
 		return (NULL);
+	}
 	ret = s12;
 	while (*counter1 != '\0')
 		*s12++ = *counter1++;
