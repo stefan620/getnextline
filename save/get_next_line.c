@@ -6,7 +6,7 @@
 /*   By: silic <silic@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 16:02:23 by silic             #+#    #+#             */
-/*   Updated: 2024/10/09 15:23:19 by silic            ###   ########.fr       */
+/*   Updated: 2024/10/09 15:07:51 by silic            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,36 +19,34 @@
 #ifndef BUFFER_SIZE
 # define BUFFER_SIZE 10
 #endif
-
 static char	*get_rest(char *buff);
 static char	*get_line(int fd, char *rest);
-static char	*ft_strchr(const char *str, int search_str);
 char	*get_next_line(int fd)
 {
-	char		*line;
+	char		*line = NULL;
 	static char	*rest = NULL;
 
-	line = NULL;
+	
 	if (fd < 0 || BUFFER_SIZE <= 0)
 	{
 		free(rest);
 		free(line);
 		rest = NULL;
-		return (NULL);
+		return(NULL);
 	}
 	line = get_line(fd, rest);
 	if (!line)
-	{
+	{	
 		free(rest);
 		free(line);
 		rest = NULL;
-		return (NULL);
+		return(NULL);
 	}
-	if (*line == 0)
+	if(*line == 0)
 	{
 		free(rest);
 		free(line);
-		return (NULL);
+		return(NULL);
 	}
 	rest = get_rest(line);
 	return (line);
@@ -57,12 +55,12 @@ static char	*get_rest(char *buff)
 {
 	char	*rest;
 	int		i;
-
+	
 	i = 0;
 	while (buff[i] != '\n' && buff[i] != '\0')
 		i++;
 	if (buff[0] == 0 || buff[i] == 0)
-		return (NULL);
+		return(NULL);
 	rest = ft_substr(buff, i + 1, ft_strlen(buff) - i);
 	buff[i + 1] = '\0';
 	if (*rest == 0)
@@ -75,23 +73,23 @@ static char	*get_rest(char *buff)
 static char	*get_line(int fd, char *rest)
 {
 	int		i;
-	char	*tmp;
-	char	*buff;
+	char *tmp;
+	char *buff;
 
 	i = 1;
-	while (i)
+	while(i)
 	{
 		buff = (char *)malloc(BUFFER_SIZE + 1 * sizeof(char));
 		if (!buff)
-			return (NULL);
+			return(NULL);
 		i = read(fd, buff, BUFFER_SIZE);
 		if (i == -1)
-			return (free(buff), NULL);
+			return(free(buff), NULL);
 		buff[i] = 0;
 		if (i == 0)
-		{
+		{	
 			free(buff);
-			break ;
+			break;
 		}
 		if (!rest)
 		{
@@ -101,29 +99,10 @@ static char	*get_line(int fd, char *rest)
 		tmp = rest;
 		if (rest)
 			rest = ft_strjoin(tmp, buff);
-		if (rest && ft_strchr(rest, '\n'))
-			break ;
+		if (rest && strchr(rest ,'\n'))
+			break;
 	}
-	return (rest);
-}
-static char	*ft_strchr(const char *str, int search_str)
-{
-	unsigned char	*ptr;
-	unsigned char	*ptr1;
-
-	ptr1 = (unsigned char *)&search_str;
-	ptr = (unsigned char *)str;
-	while (*ptr != '\0')
-	{
-		if (*ptr == *ptr1)
-		{
-			return ((char *)ptr);
-		}
-		ptr++;
-	}
-	if (*ptr1 == 0)
-		return ((char *)ptr);
-	return (0);
+	return(rest);
 }
 int	main(void)
 {
@@ -134,13 +113,13 @@ int	main(void)
 	fd = open("giant_line.txt", O_RDONLY);
 	if (fd < 0)
 		return (0);
-	while (i < 1)
+	while (i < 2)
 	{
 		s = get_next_line(fd);
 		printf("%s", s);
-		// printf("%d", i);
+		//printf("%d", i);
 		free(s);
 		i++;
 	}
-	// free(s);
+	//free(s);
 }
