@@ -6,7 +6,7 @@
 /*   By: silic <silic@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 16:02:23 by silic             #+#    #+#             */
-/*   Updated: 2024/10/05 16:32:49 by silic            ###   ########.fr       */
+/*   Updated: 2024/10/09 14:53:12 by silic            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ static char	*get_line(int fd, char *rest)
 	{
 		buff = (char *)malloc(BUFFER_SIZE + 1 * sizeof(char));
 		if (!buff)
-		return(NULL);
+			return(NULL);
 		i = read(fd, buff, BUFFER_SIZE);
 		if (i == -1)
 			return(free(buff), NULL);
@@ -89,6 +89,7 @@ static char	*get_line(int fd, char *rest)
 		if (i == 0)
 		{	
 			free(buff);
+			free(tmp);
 			break;
 		}
 		if (!rest)
@@ -96,14 +97,15 @@ static char	*get_line(int fd, char *rest)
 			free(rest);
 			rest = ft_strdup("");
 		}
+		
 		tmp = rest;
 		rest = ft_strjoin(tmp, buff);
-		if (strchr(rest ,'\n'))
+		if (rest && strchr(rest ,'\n'))
 			break;
 	}
 	return(rest);
 }
-/*int	main(void)
+int	main(void)
 {
 	int fd;
 	int i = 0;
@@ -112,7 +114,7 @@ static char	*get_line(int fd, char *rest)
 	fd = open("giant_line.txt", O_RDONLY);
 	if (fd < 0)
 		return (0);
-	while (i < 3)
+	while (i < 1)
 	{
 		s = get_next_line(fd);
 		printf("%s", s);
@@ -121,4 +123,4 @@ static char	*get_line(int fd, char *rest)
 		i++;
 	}
 	//free(s);
-}*/
+}
