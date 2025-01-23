@@ -38,16 +38,17 @@ make utility.
 
 ### Installation
 ```bash
-git clone https://github.com/<your-username>/get_next_line.git
-cd get_next_lin
-
+git clone https://github.com/stefan620/get_next_line.git
+cd get_next_line
+```
 ---
 
-##Usage
+## Usage
 
 1. Include get_next_line in your source code:
 ```c
 #include "get_next_line.h"
+```
 2. Use the function to read lines from a file:
 ```c
 int fd = open("example.txt", O_RDONLY);
@@ -58,20 +59,20 @@ while ((line = get_next_line(fd)) != NULL) {
     free(line);
 }
 close(fd);
-
+```
 ---
 
 ## Key Concepts
 
-Buffer Management: The function reads data in chunks defined by the BUFFER_SIZE macro.
-Static Variables: Maintains the state of unfinished reads across function calls.
-Memory Management: Allocates and frees memory dynamically for each line.
+- Buffer Management: The function reads data in chunks defined by the BUFFER_SIZE macro.
+- Static Variables: Maintains the state of unfinished reads across function calls.
+- Memory Management: Allocates and frees memory dynamically for each line.
 
 ---
 
 ## Project Highlights
 
-Efficient I/O: Optimized to minimize the number of read system calls.
-Dynamic Memory: Supports lines of any length, limited only by available memory.
-Error Handling: Properly detects and handles read errors and memory allocation failures.
+- Efficient I/O: Optimized to minimize the number of read system calls.
+- Dynamic Memory: Supports lines of any length, limited only by available memory.
+- Error Handling: Properly detects and handles read errors and memory allocation failures.
 
