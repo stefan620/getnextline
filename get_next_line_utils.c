@@ -1,23 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf_utils.c                                  :+:      :+:    :+:   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: silic <silic@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 13:26:01 by silic             #+#    #+#             */
-/*   Updated: 2024/10/03 18:41:33 by silic            ###   ########.fr       */
+/*   Updated: 2024/10/11 15:35:21 by silic            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 
 static size_t	ft_strlcpy(char *dst, const char *src, size_t size);
-size_t	ft_strlen(const char *str);
+size_t			ft_strlen(const char *str);
+
 char	*ft_substr(const char *s, unsigned int start, size_t len)
 {
-	char		*sub;
-	size_t		i;
+	char	*sub;
+	size_t	i;
 
 	i = ft_strlen(s);
 	if (!s)
@@ -40,7 +41,6 @@ char	*ft_substr(const char *s, unsigned int start, size_t len)
 		ft_strlcpy(sub, s + start, len + 1);
 	return (sub);
 }
-#include <stdlib.h>
 
 size_t	ft_strlen(const char *str)
 {
@@ -53,6 +53,7 @@ size_t	ft_strlen(const char *str)
 	}
 	return (n);
 }
+
 static size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 {
 	size_t	i;
@@ -73,7 +74,6 @@ static size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 	}
 	return (j);
 }
-#include <stdlib.h>
 
 char	*ft_strdup(const char *s)
 {
@@ -86,7 +86,7 @@ char	*ft_strdup(const char *s)
 	{
 		i++;
 	}
-	dup = (char *) malloc(i * sizeof(char) + 1);
+	dup = (char *)malloc(i * sizeof(char) + 1);
 	if (dup == NULL)
 		return (NULL);
 	dup1 = dup;
@@ -100,25 +100,23 @@ char	*ft_strdup(const char *s)
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
-	int			i;
 	char		*s12;
 	char		*ret;
 	const char	*counter1 = s1;
 	const char	*counter2 = s2;
+	const char	*free1 = s1;
 
-	i = 0;
-	while (*s1++ != '\0')
-		i++;
-	while (*s2++ != '\0')
-		i++;
-	s12 = (char *)malloc(i * sizeof(char) + 1);
+	s12 = (char *)malloc((ft_strlen(s1) + ft_strlen(s2)) * sizeof(char) + 1);
 	if (s12 == NULL)
+	{
+		free((void *)free1);
 		return (NULL);
+	}
 	ret = s12;
 	while (*counter1 != '\0')
 		*s12++ = *counter1++;
 	while (*counter2 != '\0')
 		*s12++ = *counter2++;
 	*s12 = '\0';
-	return (ret);
+	return (free((void *)free1), ret);
 }

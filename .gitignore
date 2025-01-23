@@ -1,0 +1,26 @@
+# Ignore C executables
+*.out
+*.exe
+*.bin
+*.elf
+
+# Ignore object files
+*.o
+*.obj
+*.a
+
+# Ignore debugging and profiling files
+*.d
+*.gch
+*.gcda
+*.gcno
+*.gcov
+
+# Ignore core dumps
+core
+*.core
+
+# Ignore Visual Studio Code settings and files
+.vscode/
+*.code-workspace
+
