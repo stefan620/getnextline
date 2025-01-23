@@ -27,7 +27,7 @@ The goal of `get_next_line` is to create a function that reads a line from a fil
 
 ```c
 char *get_next_line(int fd);
-
+```
 ---
 
 ## Getting Started
